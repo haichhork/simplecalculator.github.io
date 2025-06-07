@@ -1,6 +1,6 @@
 # Simple-Calculator 
   Join free to updated !
-# keyfeatures
+# key features
    1.run on web free 
    2.always up to date
    3.simple layout and history recording
