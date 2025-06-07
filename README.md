@@ -7,6 +7,6 @@
 # Layout 
  ![image](https://github.com/user-attachments/assets/c231f3b2-2ce6-4dd1-929f-cb5cd24c39af)
 
-# How to open on web 
+# click on link to open on your browser
   link: 
 https://haichhork.github.io/simplecalculator.github.io/
