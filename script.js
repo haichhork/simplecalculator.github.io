@@ -1,8 +1,19 @@
 const display = document.getElementById('display');
 const historyList = document.getElementById('history');
+const themeToggle = document.getElementById('themeToggle');
 let currentInput = '';
 let resultDisplayed = false;
 let history = JSON.parse(localStorage.getItem('calculatorHistory')) || [];
+
+const savedTheme = localStorage.getItem('theme');
+const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+const initialTheme = savedTheme || preferredTheme;
+setTheme(initialTheme);
+
+themeToggle.addEventListener('click', () => {
+    const nextTheme = document.body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    setTheme(nextTheme);
+});
 
 function appendNumber(number) {
     if (resultDisplayed) {
@@ -53,7 +64,6 @@ function calculateResult() {
         let expression = currentInput.replace(/÷/g, '/').replace(/×/g, '*');
         let evalResult = eval(expression);
         display.textContent = evalResult !== undefined ? evalResult : '';
-        // Only add to history if input is not empty and result is not error
         if (currentInput && !isNaN(evalResult)) {
             addToHistory(currentInput, evalResult);
         }
@@ -70,7 +80,6 @@ function updateDisplay() {
 }
 
 function addToHistory(expression, result) {
-    // Keep most recent 10 history entries
     history.unshift({ expression, result });
     if (history.length > 10) history.pop();
     localStorage.setItem('calculatorHistory', JSON.stringify(history));
@@ -92,5 +101,17 @@ function clearHistory() {
     renderHistory();
 }
 
-// Render history on page load
+function setTheme(theme) {
+    document.body.setAttribute('data-theme', theme);
+    const icon = themeToggle.querySelector('.theme-toggle__icon');
+    const label = themeToggle.querySelector('.theme-toggle__label');
+    const isDark = theme === 'dark';
+
+    themeToggle.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
+    themeToggle.setAttribute('aria-pressed', String(isDark));
+    icon.textContent = isDark ? '☀️' : '🌙';
+    label.textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    localStorage.setItem('theme', theme);
+}
+
 renderHistory();
